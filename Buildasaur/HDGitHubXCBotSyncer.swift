@@ -51,7 +51,7 @@ public class HDGitHubXCBotSyncer : Syncer {
             let serverConfig = storageManager.servers.filter({ $0.host == serverHost }).first
         {
             self.project = project
-            self.github = GitHubFactory.server(project.githubToken)
+            self.github = GitHubFactory.serverFromProject(project)
             self.xcodeServer = XcodeServerFactory.server(serverConfig)
             self.waitForLttm = json.optionalBoolForKey("wait_for_lttm") ?? true
             self.postStatusComments = json.optionalBoolForKey("post_status_comments") ?? true

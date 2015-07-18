@@ -56,7 +56,7 @@ class StorageManager {
         }
         
         let xcodeServer = XcodeServerFactory.server(serverConfig)
-        let github = GitHubFactory.server(project.githubToken)
+        let github = GitHubFactory.serverFromProject(project)
         let syncer = HDGitHubXCBotSyncer(
             integrationServer: xcodeServer,
             sourceServer: github,
