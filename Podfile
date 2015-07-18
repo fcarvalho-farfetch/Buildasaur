@@ -14,6 +14,10 @@ target 'Buildasaur' do
 	also_xcode_pods
 end
 
+target 'buildasaur-cli' do
+	also_xcode_pods
+end
+
 target 'BuildaKit' do
 	also_xcode_pods
 end

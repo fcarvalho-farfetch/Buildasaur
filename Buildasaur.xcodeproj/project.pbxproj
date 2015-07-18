@@ -89,6 +89,7 @@
 		3AF1B1241AAC7CA500917EF3 /* StatusSyncerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF1B1231AAC7CA500917EF3 /* StatusSyncerViewController.swift */; };
 		72C942865E06140723569CF1 /* Pods_Buildasaur.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BFC5293812E0E442BE2182D0 /* Pods_Buildasaur.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		B967DFBE36176FD9B4960410 /* Pods_BuildaGitServer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73C0D6A9CBF4A8155E3A7376 /* Pods_BuildaGitServer.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		E23DB1DDA032FA0995131E1C /* Pods_buildasaur_cli.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B9E13C42DA7F5B3B180DEDD8 /* Pods_buildasaur_cli.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		EC160F5DE92FC57D64786D8F /* Pods_BuildaKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1086D69942F8B7830B5D00E1 /* Pods_BuildaKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		F27BD0C6EA74D366E34EB3BA /* Pods_BuildaGitServerTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ECC1671A5C1E3811C3C3FFB /* Pods_BuildaGitServerTests.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 /* End PBXBuildFile section */
@@ -173,6 +174,7 @@
 		07EFD21B2E798E38C6190291 /* Pods-BuildasaurTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildasaurTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuildasaurTests/Pods-BuildasaurTests.release.xcconfig"; sourceTree = "<group>"; };
 		0DC2378EE70CD698E59BFA4C /* Pods-BuildaUtils.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaUtils.testing.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaUtils/Pods-BuildaUtils.testing.xcconfig"; sourceTree = "<group>"; };
 		1086D69942F8B7830B5D00E1 /* Pods_BuildaKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BuildaKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		22364BDDE2175A41C4E23FC7 /* Pods-buildasaur-cli.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buildasaur-cli.debug.xcconfig"; path = "Pods/Target Support Files/Pods-buildasaur-cli/Pods-buildasaur-cli.debug.xcconfig"; sourceTree = "<group>"; };
 		239B67CE78F7D82C57542F3F /* Pods-BuildaUtilsTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaUtilsTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaUtilsTests/Pods-BuildaUtilsTests.debug.xcconfig"; sourceTree = "<group>"; };
 		273B1D0B081ADAFB9D23678F /* Pods-BuildasaurTests.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildasaurTests.testing.xcconfig"; path = "Pods/Target Support Files/Pods-BuildasaurTests/Pods-BuildasaurTests.testing.xcconfig"; sourceTree = "<group>"; };
 		287BF1AC40C4A69808176A05 /* Pods-BuildaUtils.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaUtils.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaUtils/Pods-BuildaUtils.release.xcconfig"; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 		60565EAEB9A1817A1DEB0FF2 /* Pods-BuildaGitServerTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaGitServerTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaGitServerTests/Pods-BuildaGitServerTests.debug.xcconfig"; sourceTree = "<group>"; };
 		681D44417C140BD1795F71E4 /* Pods-BuildaGitServer.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaGitServer.testing.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaGitServer/Pods-BuildaGitServer.testing.xcconfig"; sourceTree = "<group>"; };
 		7194D95E34FC188EF9A1BAB1 /* Pods_BuildasaurTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BuildasaurTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		71B56342143FC7466FBE4EB6 /* Pods-buildasaur-cli.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buildasaur-cli.release.xcconfig"; path = "Pods/Target Support Files/Pods-buildasaur-cli/Pods-buildasaur-cli.release.xcconfig"; sourceTree = "<group>"; };
 		73C0D6A9CBF4A8155E3A7376 /* Pods_BuildaGitServer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BuildaGitServer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7C82BB415700C81EA9715FE4 /* Pods-Buildasaur.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Buildasaur.testing.xcconfig"; path = "Pods/Target Support Files/Pods-Buildasaur/Pods-Buildasaur.testing.xcconfig"; sourceTree = "<group>"; };
 		7E934E50EA252648E6AFE307 /* Pods-BuildaKitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaKitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaKitTests/Pods-BuildaKitTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -276,12 +279,14 @@
 		9ECC1671A5C1E3811C3C3FFB /* Pods_BuildaGitServerTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BuildaGitServerTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9FD7CC3A9C814B53A3E59FEA /* Pods-BuildaGitServerTests.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaGitServerTests.testing.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaGitServerTests/Pods-BuildaGitServerTests.testing.xcconfig"; sourceTree = "<group>"; };
 		AD459625FF20E15478BB71A2 /* Pods-Buildasaur.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Buildasaur.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Buildasaur/Pods-Buildasaur.debug.xcconfig"; sourceTree = "<group>"; };
+		B9E13C42DA7F5B3B180DEDD8 /* Pods_buildasaur_cli.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_buildasaur_cli.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF392490D4B2E91AE578F51 /* Pods-BuildasaurTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildasaurTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BuildasaurTests/Pods-BuildasaurTests.debug.xcconfig"; sourceTree = "<group>"; };
 		BFC5293812E0E442BE2182D0 /* Pods_Buildasaur.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Buildasaur.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6866CD696AF52F4772D2C38 /* Pods-BuildaKitTests.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaKitTests.testing.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaKitTests/Pods-BuildaKitTests.testing.xcconfig"; sourceTree = "<group>"; };
 		C932019AC696395A2BF69F2F /* Pods-BuildaKit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaKit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaKit/Pods-BuildaKit.debug.xcconfig"; sourceTree = "<group>"; };
 		CECD9EDC0C4F882ACEB5E1F3 /* Pods-Buildasaur.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Buildasaur.release.xcconfig"; path = "Pods/Target Support Files/Pods-Buildasaur/Pods-Buildasaur.release.xcconfig"; sourceTree = "<group>"; };
 		DC54BBBDFD511913AA588726 /* Pods-BuildaUtilsTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaUtilsTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaUtilsTests/Pods-BuildaUtilsTests.release.xcconfig"; sourceTree = "<group>"; };
+		EEEB886AE6D62C9F52A4D58E /* Pods-buildasaur-cli.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-buildasaur-cli.testing.xcconfig"; path = "Pods/Target Support Files/Pods-buildasaur-cli/Pods-buildasaur-cli.testing.xcconfig"; sourceTree = "<group>"; };
 		F159C5240A79DE46DB418D8C /* Pods-BuildaGitServerTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaGitServerTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaGitServerTests/Pods-BuildaGitServerTests.release.xcconfig"; sourceTree = "<group>"; };
 		F55F8A6BBDE1F9BD198D441A /* Pods-BuildaUtilsTests.testing.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BuildaUtilsTests.testing.xcconfig"; path = "Pods/Target Support Files/Pods-BuildaUtilsTests/Pods-BuildaUtilsTests.testing.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -293,6 +298,7 @@
 			files = (
 				3A3231AF1B5AE90500B53E3F /* BuildaGitServer.framework in Frameworks */,
 				3A3231AE1B5AE90300B53E3F /* BuildaKit.framework in Frameworks */,
+				E23DB1DDA032FA0995131E1C /* Pods_buildasaur_cli.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -371,6 +377,9 @@
 				4B5DB9726CCDA0682B1C8D8A /* Pods-BuildaKitTests.debug.xcconfig */,
 				C6866CD696AF52F4772D2C38 /* Pods-BuildaKitTests.testing.xcconfig */,
 				7E934E50EA252648E6AFE307 /* Pods-BuildaKitTests.release.xcconfig */,
+				22364BDDE2175A41C4E23FC7 /* Pods-buildasaur-cli.debug.xcconfig */,
+				EEEB886AE6D62C9F52A4D58E /* Pods-buildasaur-cli.testing.xcconfig */,
+				71B56342143FC7466FBE4EB6 /* Pods-buildasaur-cli.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -590,6 +599,7 @@
 				40BCAC9716082AB3070E2DDC /* Pods_BuildaUtilsTests.framework */,
 				1086D69942F8B7830B5D00E1 /* Pods_BuildaKit.framework */,
 				9763FA72546E3CAF2D2786DA /* Pods_BuildaKitTests.framework */,
+				B9E13C42DA7F5B3B180DEDD8 /* Pods_buildasaur_cli.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -620,9 +630,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 3A1ED6681B5AE5B1002A44D8 /* Build configuration list for PBXNativeTarget "buildasaur-cli" */;
 			buildPhases = (
+				6239BAC1117233377864CFEC /* Check Pods Manifest.lock */,
 				3A1ED65D1B5AE5B1002A44D8 /* Sources */,
 				3A1ED65E1B5AE5B1002A44D8 /* Frameworks */,
 				3A1ED65F1B5AE5B1002A44D8 /* CopyFiles */,
+				6D7D95800E9567F0E9B4A378 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -890,6 +902,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BuildaKitTests/Pods-BuildaKitTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		6239BAC1117233377864CFEC /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		69446B0FABF0AB5A56AA3C76 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -903,6 +930,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BuildaGitServer/Pods-BuildaGitServer-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6D7D95800E9567F0E9B4A378 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-buildasaur-cli/Pods-buildasaur-cli-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		86D1F0913CC6AFCE8C2CE2B6 /* Embed Pods Frameworks */ = {
@@ -1204,7 +1246,9 @@
 /* Begin XCBuildConfiguration section */
 		3A1ED6651B5AE5B1002A44D8 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 22364BDDE2175A41C4E23FC7 /* Pods-buildasaur-cli.debug.xcconfig */;
 			buildSettings = {
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1212,8 +1256,10 @@
 		};
 		3A1ED6661B5AE5B1002A44D8 /* Testing */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EEEB886AE6D62C9F52A4D58E /* Pods-buildasaur-cli.testing.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1222,8 +1268,10 @@
 		};
 		3A1ED6671B5AE5B1002A44D8 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 71B56342143FC7466FBE4EB6 /* Pods-buildasaur-cli.release.xcconfig */;
 			buildSettings = {
 				COPY_PHASE_STRIP = NO;
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1460,6 +1508,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
 				INFOPLIST_FILE = BuildaKit/Info.plist;
@@ -1486,6 +1535,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1514,6 +1564,7 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_NS_ASSERTIONS = NO;
 				FRAMEWORK_VERSION = A;
 				GCC_NO_COMMON_BLOCKS = YES;
