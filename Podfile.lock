@@ -1,14 +1,42 @@
 PODS:
   - BuildaUtils (0.0.11)
-  - XcodeServerSDK (0.2.1):
+  - ReactiveCocoa (4.0.2-alpha-1):
+    - ReactiveCocoa/UI (= 4.0.2-alpha-1)
+    - Result (~> 0.6-beta.1)
+  - ReactiveCocoa/Core (4.0.2-alpha-1):
+    - ReactiveCocoa/no-arc
+    - Result (~> 0.6-beta.1)
+  - ReactiveCocoa/no-arc (4.0.2-alpha-1):
+    - Result (~> 0.6-beta.1)
+  - ReactiveCocoa/UI (4.0.2-alpha-1):
+    - ReactiveCocoa/Core
+    - Result (~> 0.6-beta.1)
+  - Result (0.6-beta.1)
+  - XcodeServerSDK/Core (0.3.0):
     - BuildaUtils (= 0.0.11)
+  - XcodeServerSDK/ReactiveCocoa (0.3.0):
+    - ReactiveCocoa (= 4.0.2-alpha-1)
+    - XcodeServerSDK/Core
 
 DEPENDENCIES:
   - BuildaUtils (= 0.0.11)
-  - XcodeServerSDK (= 0.2.1)
+  - XcodeServerSDK/ReactiveCocoa (from `git@github.com:czechboy0/XcodeServerSDK.git`,
+    commit `dbbf27438df705880d873f326067925ee131e5b1`)
+
+EXTERNAL SOURCES:
+  XcodeServerSDK:
+    :commit: dbbf27438df705880d873f326067925ee131e5b1
+    :git: git@github.com:czechboy0/XcodeServerSDK.git
+
+CHECKOUT OPTIONS:
+  XcodeServerSDK:
+    :commit: dbbf27438df705880d873f326067925ee131e5b1
+    :git: git@github.com:czechboy0/XcodeServerSDK.git
 
 SPEC CHECKSUMS:
   BuildaUtils: be29c9977230329a330a02c6f97454a7422ae534
-  XcodeServerSDK: bdf7258e52589b49176fa909e360751f92cc5397
+  ReactiveCocoa: 652cf90e5de65708e7e2111f77405756da21aabe
+  Result: af24e3e57ab81005ec4221a53fd36dc1e7a52869
+  XcodeServerSDK: 41a6bedf492055267bde71f33295884ce37494ff
 
 COCOAPODS: 0.38.2
