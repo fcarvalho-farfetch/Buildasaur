@@ -93,8 +93,8 @@ extension HDGitHubXCBotSyncer {
     func createBotFromPR(pr: PullRequest, completion: () -> ()) {
         
         let branchName = pr.head.ref
-        let botName = BotNaming.nameForBotWithPR(pr, repoName: self.repoName()!)
-        
+        let botName = BotNaming.nameForBotWithPR(self.repoName()!, pr: pr)
+                
         self.createBotFromName(botName, branch: branchName, repo: pr.head.repo, completion: completion)
     }
     

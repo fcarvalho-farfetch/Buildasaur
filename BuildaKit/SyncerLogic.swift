@@ -192,7 +192,7 @@ extension HDGitHubXCBotSyncer {
             //make sure every PR has a bot
             for pr in prs {
                 
-                let botName = BotNaming.nameForBotWithPR(pr, repoName: repoName)
+                let botName = BotNaming.nameForBotWithPR(self.repoName()!, pr: pr)
                 
                 if let bot = mappedBots[botName] {
                     //we found a corresponding bot to this PR, add to toSync
