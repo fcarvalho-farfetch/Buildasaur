@@ -11,28 +11,43 @@ import XcodeServerSDK
 import BuildaGitServer
 
 class BotNaming {
-    
+
     class func isBuildaBot(bot: Bot) -> Bool {
-        return bot.name.hasPrefix(self.prefixForBuildaBot())
+        return bot.name.hasSuffix(self.suffixForBuildaBot())
     }
-    
+
     class func isBuildaBotBelongingToRepoWithName(bot: Bot, repoName: String) -> Bool {
-        return bot.name.hasPrefix(self.prefixForBuildaBotInRepoWithName(repoName))
+        let prefix = self.prefixForBuildaBotInRepoWithName(repoName)
+        let suffix = self.suffixForBuildaBot()
+
+        return bot.name.hasPrefix(prefix) && bot.name.hasSuffix(suffix)
     }
-    
+
     class func nameForBotWithBranch(branch: Branch, repoName: String) -> String {
-        return "\(self.prefixForBuildaBotInRepoWithName(repoName)) |-> \(branch.name)"
+        return "\(self.prefixForBuildaBotInRepoWithName(repoName, branch: branch)) Debug \(self.suffixForBuildaBot())"
     }
-    
+
     class func nameForBotWithPR(pr: PullRequest, repoName: String) -> String {
-        return "\(self.prefixForBuildaBotInRepoWithName(repoName)) PR #\(pr.number)"
+        return "\(self.prefixForBuildaBotInRepoWithName(repoName, pr: pr)) Debug PR #\(pr.number) \(self.suffixForBuildaBot())"
     }
-    
+
     class func prefixForBuildaBotInRepoWithName(repoName: String) -> String {
-        return "\(self.prefixForBuildaBot()) [\(repoName)]"
+        return "[\(repoName.lowercaseString):"
     }
-    
-    class func prefixForBuildaBot() -> String {
+
+    class func prefixForBuildaBotInRepoWithName(reponame: String, branch: Branch) -> String {
+        return "[\(reponame.lowercaseString):\(branch.name)]"
+    }
+
+    class func prefixForBuildaBotInRepoWithName(reponame: String, pr: PullRequest) -> String {
+        return "[\(reponame.lowercaseString):\(pr.head.ref)]"
+    }
+
+    class func suffixForBuildaBotInRepoWithName(repoName: String) -> String {
+        return "\(self.suffixForBuildaBot())"
+    }
+
+    class func suffixForBuildaBot() -> String {
         return "BuildaBot"
     }
 }
