@@ -26,7 +26,7 @@ private struct ShowableBranch {
 class BranchWatchingViewController: NSViewController, NSTableViewDelegate, NSTableViewDataSource {
     
     //these two must be set before viewDidLoad by its presenting view controller
-    var syncer: HDGitHubXCBotSyncer!
+    var syncer: StandardSyncer!
     var watchedBranchNames: Set<String>!
     weak var delegate: BranchWatchingViewControllerDelegate?
     
@@ -58,7 +58,7 @@ class BranchWatchingViewController: NSViewController, NSTableViewDelegate, NSTab
         }).map { branches, prs -> [ShowableBranch] in
             
             //map branches to PR numbers
-            let mappedPRs = prs.dictionarifyWithKey { $0.head.ref }
+            let mappedPRs = prs.dictionarifyWithKey { $0.headName }
             
             return branches.map {
                 let pr = mappedPRs[$0.name]?.number
@@ -66,8 +66,9 @@ class BranchWatchingViewController: NSViewController, NSTableViewDelegate, NSTab
             }
         }
         
-        showables.start(Event.sink(error: { (error) -> () in
-            UIUtils.showAlertWithError(error)
+        showables.start(Observer(
+            failed: { (error) -> () in
+                UIUtils.showAlertWithError(error)
             }, completed: { [weak self] () -> () in
                 self?.branchActivityIndicator.stopAnimation(nil)
             }, next: { [weak self] (branches) -> () in
@@ -76,37 +77,37 @@ class BranchWatchingViewController: NSViewController, NSTableViewDelegate, NSTab
         }))
     }
     
-    func fetchBranchesProducer() -> SignalProducer<[Branch], NSError> {
+    func fetchBranchesProducer() -> SignalProducer<[BranchType], NSError> {
         
-        let repoName = self.syncer.project.githubRepoName()!
+        let repoName = self.syncer.project.serviceRepoName()!
         
         return SignalProducer { [weak self] sink, _ in
             guard let sself = self else { return }
             
-            sself.syncer.github.getBranchesOfRepo(repoName) { (branches, error) -> () in
+            sself.syncer.sourceServer.getBranchesOfRepo(repoName) { (branches, error) -> () in
                 if let error = error {
-                    sendError(sink, error)
+                    sink.sendFailed(error as NSError)
                 } else {
-                    sendNext(sink, branches!)
-                    sendCompleted(sink)
+                    sink.sendNext(branches!)
+                    sink.sendCompleted()
                 }
             }
         }.observeOn(UIScheduler())
     }
     
-    func fetchPRsProducer() -> SignalProducer<[PullRequest], NSError> {
+    func fetchPRsProducer() -> SignalProducer<[PullRequestType], NSError> {
         
-        let repoName = self.syncer.project.githubRepoName()!
+        let repoName = self.syncer.project.serviceRepoName()!
         
         return SignalProducer { [weak self] sink, _ in
             guard let sself = self else { return }
             
-            sself.syncer.github.getOpenPullRequests(repoName) { (prs, error) -> () in
+            sself.syncer.sourceServer.getOpenPullRequests(repoName) { (prs, error) -> () in
                 if let error = error {
-                    sendError(sink, error)
+                    sink.sendFailed(error as NSError)
                 } else {
-                    sendNext(sink, prs!)
-                    sendCompleted(sink)
+                    sink.sendNext(prs!)
+                    sink.sendCompleted()
                 }
             }
         }.observeOn(UIScheduler())

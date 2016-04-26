@@ -13,6 +13,7 @@ import BuildaGitServer
 
 class SummaryBuilder {
     
+    var statusCreator: BuildStatusCreator!
     var lines: [String] = []
     let resultString: String
     var linkBuilder: (Integration) -> String? = { _ in nil }
@@ -23,20 +24,29 @@ class SummaryBuilder {
     
     //MARK: high level
     
-    func buildPassing(integration: Integration) -> HDGitHubXCBotSyncer.GitHubStatusAndComment {
+    func buildPassing(integration: Integration) -> StatusAndComment {
         
         let linkToIntegration = self.linkBuilder(integration)
         self.addBaseCommentFromIntegration(integration)
         
-        let status = HDGitHubXCBotSyncer.createStatusFromState(.Success, description: "Build passed!", targetUrl: linkToIntegration)
+        let status = self.createStatus(.Success, description: "Build passed!", targetUrl: linkToIntegration)
         
         let buildResultSummary = integration.buildResultSummary!
-        if integration.result == .Succeeded {
+        switch integration.result {
+        case .Succeeded?:
             self.appendTestsPassed(buildResultSummary)
-        } else if integration.result == .Warnings {
-            self.appendWarnings(buildResultSummary)
-        } else if integration.result == .AnalyzerWarnings {
-            self.appendAnalyzerWarnings(buildResultSummary)
+        case .Warnings?, .AnalyzerWarnings?:
+            
+            switch (buildResultSummary.warningCount, buildResultSummary.analyzerWarningCount) {
+            case (_, 0):
+                self.appendWarnings(buildResultSummary)
+            case (0, _):
+                self.appendAnalyzerWarnings(buildResultSummary)
+            default:
+                self.appendWarningsAndAnalyzerWarnings(buildResultSummary)
+            }
+            
+        default: break
         }
         
         //and code coverage
@@ -45,48 +55,54 @@ class SummaryBuilder {
         return self.buildWithStatus(status)
     }
     
-    func buildFailingTests(integration: Integration) -> HDGitHubXCBotSyncer.GitHubStatusAndComment {
+    func buildFailingTests(integration: Integration) -> StatusAndComment {
         
         let linkToIntegration = self.linkBuilder(integration)
         
         self.addBaseCommentFromIntegration(integration)
         
-        let status = HDGitHubXCBotSyncer.createStatusFromState(.Failure, description: "Build failed tests!", targetUrl: linkToIntegration)
+        let status = self.createStatus(.Failure, description: "Build failed tests!", targetUrl: linkToIntegration)
         let buildResultSummary = integration.buildResultSummary!
         self.appendTestFailure(buildResultSummary)
         return self.buildWithStatus(status)
     }
     
-    func buildErrorredIntegration(integration: Integration) -> HDGitHubXCBotSyncer.GitHubStatusAndComment {
+    func buildErrorredIntegration(integration: Integration) -> StatusAndComment {
         
         let linkToIntegration = self.linkBuilder(integration)
         self.addBaseCommentFromIntegration(integration)
         
-        let status = HDGitHubXCBotSyncer.createStatusFromState(.Error, description: "Build error!", targetUrl: linkToIntegration)
+        let status = self.createStatus(.Error, description: "Build error!", targetUrl: linkToIntegration)
         
         self.appendErrors(integration)
         return self.buildWithStatus(status)
     }
     
-    func buildCanceledIntegration(integration: Integration) -> HDGitHubXCBotSyncer.GitHubStatusAndComment {
+    func buildCanceledIntegration(integration: Integration) -> StatusAndComment {
         
         let linkToIntegration = self.linkBuilder(integration)
         
         self.addBaseCommentFromIntegration(integration)
         
-        let status = HDGitHubXCBotSyncer.createStatusFromState(.Error, description: "Build canceled!", targetUrl: linkToIntegration)
+        let status = self.createStatus(.Error, description: "Build canceled!", targetUrl: linkToIntegration)
         
         self.appendCancel()
         return self.buildWithStatus(status)
     }
     
-    func buildEmptyIntegration() -> HDGitHubXCBotSyncer.GitHubStatusAndComment {
+    func buildEmptyIntegration() -> StatusAndComment {
         
-        let status = HDGitHubXCBotSyncer.createStatusFromState(.NoState, description: nil, targetUrl: nil)
-        return (status: status, comment: nil)
+        let status = self.createStatus(.NoState, description: nil, targetUrl: nil)
+        return self.buildWithStatus(status)
     }
     
     //MARK: utils
+    
+    private func createStatus(state: BuildState, description: String?, targetUrl: String?) -> StatusType {
+        
+        let status = self.statusCreator.createStatusFromState(state, description: description, targetUrl: targetUrl)
+        return status
+    }
     
     func addBaseCommentFromIntegration(integration: Integration) {
         
@@ -125,6 +141,14 @@ class SummaryBuilder {
         self.lines.append(self.resultString + "All \(testsCount) tests passed, but please **fix \(analyzerWarningCount) " + "analyzer warning".pluralizeStringIfNecessary(analyzerWarningCount) + "**.")
     }
     
+    func appendWarningsAndAnalyzerWarnings(buildResultSummary: BuildResultSummary) {
+        
+        let warningCount = buildResultSummary.warningCount
+        let analyzerWarningCount = buildResultSummary.analyzerWarningCount
+        let testsCount = buildResultSummary.testsCount
+        self.lines.append(self.resultString + "All \(testsCount) tests passed, but please **fix \(warningCount) " + "warning".pluralizeStringIfNecessary(warningCount) + "** and **\(analyzerWarningCount) " + "analyzer warning".pluralizeStringIfNecessary(analyzerWarningCount) + "**.")
+    }
+    
     func appendCodeCoverage(buildResultSummary: BuildResultSummary) {
         
         let codeCoveragePercentage = buildResultSummary.codeCoveragePercentage
@@ -152,7 +176,7 @@ class SummaryBuilder {
         self.lines.append("Build was **manually canceled**.")
     }
     
-    func buildWithStatus(status: Status) -> HDGitHubXCBotSyncer.GitHubStatusAndComment {
+    func buildWithStatus(status: StatusType) -> StatusAndComment {
         
         let comment: String?
         if lines.count == 0 {
@@ -160,7 +184,7 @@ class SummaryBuilder {
         } else {
             comment = lines.joinWithSeparator("\n")
         }
-        return (status: status, comment: comment)
+        return StatusAndComment(status: status, comment: comment)
     }
 }
 

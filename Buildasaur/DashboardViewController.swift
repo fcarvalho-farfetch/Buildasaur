@@ -9,6 +9,7 @@
 import Cocoa
 import BuildaKit
 import ReactiveCocoa
+import Result
 
 protocol EditeeDelegate: class, EmptyXcodeServerViewControllerDelegate, XcodeServerViewControllerDelegate, EmptyProjectViewControllerDelegate, ProjectViewControllerDelegate, EmptyBuildTemplateViewControllerDelegate, BuildTemplateViewControllerDelegate, SyncerViewControllerDelegate { }
 
@@ -24,6 +25,7 @@ class DashboardViewController: PresentableViewController {
     
     //injected before viewDidLoad
     var syncerManager: SyncerManager!
+    var serviceAuthenticator: ServiceAuthenticator!
     
     private var syncerViewModels: MutableProperty<[SyncerViewModel]> = MutableProperty([])
     
@@ -55,8 +57,8 @@ class DashboardViewController: PresentableViewController {
         let anySyncerStateChanged = self.syncerViewModels.producer.flatMap(.Merge) { newViewModels -> SignalProducer<SignalProducer<Bool, NoError>, NoError> in
             
             return SignalProducer { sink, _ in
-                newViewModels.forEach { sendNext(sink, $0.syncer.activeSignalProducer.producer) }
-                sendCompleted(sink)
+                newViewModels.forEach { sink.sendNext($0.syncer.activeSignalProducer.producer) }
+                sink.sendCompleted()
             }
         }.flatten(.Merge)
         
@@ -104,9 +106,9 @@ class DashboardViewController: PresentableViewController {
             self.showSyncerEditViewControllerWithTriplet($0.toEditable(), state: .Syncer)
         }
         self.syncerManager.syncersProducer.startWithNext { newSyncers in
-            self.syncerViewModels.value = newSyncers.map {
-                SyncerViewModel(syncer: $0, presentEditViewController: present)
-            }
+            self.syncerViewModels.value = newSyncers
+                .map { SyncerViewModel(syncer: $0, presentEditViewController: present) }
+                .sort { $0.0.initialProjectName < $0.1.initialProjectName }
             self.syncersTableView.reloadData()
         }
     }
@@ -159,6 +161,10 @@ class DashboardViewController: PresentableViewController {
         //to be in sync in the UI, in case setting fails
         self.launchOnLoginButton.on = loginItem.isLaunchItem
     }
+    
+    @IBAction func checkForUpdatesClicked(sender: NSButton) {
+        (NSApp.delegate as! AppDelegate).checkForUpdates(sender)
+    }
 }
 
 extension DashboardViewController {
@@ -184,7 +190,7 @@ extension DashboardViewController {
         var context = EditorContext()
         context.configTriplet = triplet
         context.syncerManager = self.syncerManager
-        viewController.factory = EditorViewControllerFactory(storyboardLoader: self.storyboardLoader)
+        viewController.factory = EditorViewControllerFactory(storyboardLoader: self.storyboardLoader, serviceAuthenticator: self.serviceAuthenticator)
         context.editeeDelegate = viewController
         viewController.context.value = context
         

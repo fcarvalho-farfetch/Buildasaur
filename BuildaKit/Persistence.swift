@@ -228,6 +228,16 @@ public class Persistence {
         _ = try? self.fileManager.copyItemAtURL(url, toURL: writeUrl)
     }
     
+    public func copyFileToFolder(fileName: String, folder: String) {
+        
+        let url = self.fileURLWithName(fileName, intention: .Reading, isDirectory: false)
+        let writeUrl = self
+            .fileURLWithName(folder, intention: .Writing, isDirectory: true)
+            .URLByAppendingPathComponent(fileName, isDirectory: false)
+        
+        _ = try? self.fileManager.copyItemAtURL(url, toURL: writeUrl)
+    }
+    
     public func createFolderIfNotExists(url: NSURL) {
         
         let fm = self.fileManager
@@ -244,7 +254,7 @@ public class Persistence {
         case WritingNoCreateFolder
     }
     
-    private func folderForIntention(intention: PersistenceIntention) -> NSURL {
+    func folderForIntention(intention: PersistenceIntention) -> NSURL {
         switch intention {
         case .Reading:
             return self.readingFolder
@@ -259,7 +269,9 @@ public class Persistence {
             let contents = try self.fileManager.contentsOfDirectoryAtURL(folderUrl, includingPropertiesForKeys: nil, options: [.SkipsHiddenFiles, .SkipsSubdirectoryDescendants])
             return contents
         } catch {
-            Log.error("Couldn't read folder \(folderUrl), error \(error)")
+            if (error as NSError).code != 260 { //ignore not found errors
+                Log.error("Couldn't read folder \(folderUrl), error \(error)")
+            }
             return nil
         }
     }

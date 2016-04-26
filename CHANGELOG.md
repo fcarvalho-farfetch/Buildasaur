@@ -1,5 +1,110 @@
 # Change Log
 
+## [Unreleased](https://github.com/czechboy0/buildasaur/tree/HEAD)
+
+[Full Changelog](https://github.com/czechboy0/buildasaur/compare/v1.0.0-b2...HEAD)
+
+**Fixed bugs:**
+
+- Crash when syncing Github PR from a deleted repo [\#247](https://github.com/czechboy0/Buildasaur/issues/247)
+- Buildasaur doesn't extract repo name from GitHub url that does not end in ".git" [\#244](https://github.com/czechboy0/Buildasaur/issues/244)
+
+**Closed issues:**
+
+- Analyzer warning counts in commits and email text [\#253](https://github.com/czechboy0/Buildasaur/issues/253)
+- Prebuild trigger cannot find project folder [\#252](https://github.com/czechboy0/Buildasaur/issues/252)
+- Internal Server Error \(xcssecurity\): could not read password from keychain [\#245](https://github.com/czechboy0/Buildasaur/issues/245)
+- Send heartbeat event when app gets sparkle-updated [\#236](https://github.com/czechboy0/Buildasaur/issues/236)
+- Investigate viability of integration with Swift Package Manager/Build System [\#197](https://github.com/czechboy0/Buildasaur/issues/197)
+
+**Merged pull requests:**
+
+- Include Analyzer Warning count when result is Warnings [\#254](https://github.com/czechboy0/Buildasaur/pull/254) ([czechboy0](https://github.com/czechboy0))
+- Spring cleaning \(fixed tests, project, updated cocoapods\) [\#250](https://github.com/czechboy0/Buildasaur/pull/250) ([czechboy0](https://github.com/czechboy0))
+- Updated Swift version, crash fix [\#249](https://github.com/czechboy0/Buildasaur/pull/249) ([czechboy0](https://github.com/czechboy0))
+- Buildasaur Github issue \#244 [\#246](https://github.com/czechboy0/Buildasaur/pull/246) ([lindsaylandry](https://github.com/lindsaylandry))
+- Sparkle Update Event [\#241](https://github.com/czechboy0/Buildasaur/pull/241) ([czechboy0](https://github.com/czechboy0))
+- Swift 2.2, dependencies upgraded [\#237](https://github.com/czechboy0/Buildasaur/pull/237) ([czechboy0](https://github.com/czechboy0))
+
+## [v1.0.0-b2](https://github.com/czechboy0/buildasaur/tree/v1.0.0-b2) (2016-02-04)
+[Full Changelog](https://github.com/czechboy0/buildasaur/compare/v1.0.0-b1...v1.0.0-b2)
+
+**Fixed bugs:**
+
+- Clean install prints errors on startup \(migration related\) [\#227](https://github.com/czechboy0/Buildasaur/issues/227)
+- Bugfix in migration [\#234](https://github.com/czechboy0/Buildasaur/pull/234) ([czechboy0](https://github.com/czechboy0))
+
+**Closed issues:**
+
+- Add types of used services to Heartbeat \(to better allocate time for features\) [\#219](https://github.com/czechboy0/Buildasaur/issues/219)
+- Update README [\#213](https://github.com/czechboy0/Buildasaur/issues/213)
+- Show on dashboard when a bot is erroring out [\#206](https://github.com/czechboy0/Buildasaur/issues/206)
+
+**Merged pull requests:**
+
+- Sparkle and Keychain fixes in development [\#235](https://github.com/czechboy0/Buildasaur/pull/235) ([czechboy0](https://github.com/czechboy0))
+- Syncer status UI improvements [\#233](https://github.com/czechboy0/Buildasaur/pull/233) ([czechboy0](https://github.com/czechboy0))
+- Added syncer types to heartbeat to know the github/bitbucket split [\#232](https://github.com/czechboy0/Buildasaur/pull/232) ([czechboy0](https://github.com/czechboy0))
+- Readme improvements for 1.0 [\#231](https://github.com/czechboy0/Buildasaur/pull/231) ([czechboy0](https://github.com/czechboy0))
+
+## [v1.0.0-b1](https://github.com/czechboy0/buildasaur/tree/v1.0.0-b1) (2016-02-03)
+[Full Changelog](https://github.com/czechboy0/buildasaur/compare/v0.8.0...v1.0.0-b1)
+
+**Closed issues:**
+
+- Create a Sparkle xml feed update fastlane action [\#228](https://github.com/czechboy0/Buildasaur/issues/228)
+- Add pushing to Cask into the Fastfile release lane [\#191](https://github.com/czechboy0/Buildasaur/issues/191)
+- Investigate opening a socket to the GitHub server [\#170](https://github.com/czechboy0/Buildasaur/issues/170)
+- Bitbucket Support [\#65](https://github.com/czechboy0/Buildasaur/issues/65)
+- Automatic updates [\#44](https://github.com/czechboy0/Buildasaur/issues/44)
+
+**Merged pull requests:**
+
+- Adding Sparkle autoupdater [\#230](https://github.com/czechboy0/Buildasaur/pull/230) ([czechboy0](https://github.com/czechboy0))
+- \[WIP\] Full BitBucket Support [\#217](https://github.com/czechboy0/Buildasaur/pull/217) ([czechboy0](https://github.com/czechboy0))
+- Developing 1.0 - Iris [\#214](https://github.com/czechboy0/Buildasaur/pull/214) ([czechboy0](https://github.com/czechboy0))
+
+## [v0.8.0](https://github.com/czechboy0/buildasaur/tree/v0.8.0) (2016-01-28)
+[Full Changelog](https://github.com/czechboy0/buildasaur/compare/v0.6.5...v0.8.0)
+
+**Fixed bugs:**
+
+- Fix signing releases with Developer ID [\#211](https://github.com/czechboy0/Buildasaur/issues/211)
+
+**Closed issues:**
+
+- Extend SwiftSafe to async ops, use it to synchronize HTTP server for refresh token bottleneck [\#220](https://github.com/czechboy0/Buildasaur/issues/220)
+- Put logs into a separate folder [\#202](https://github.com/czechboy0/Buildasaur/issues/202)
+- Add Crashlytics [\#198](https://github.com/czechboy0/Buildasaur/issues/198)
+- Introduce more state granularity when syncing [\#168](https://github.com/czechboy0/Buildasaur/issues/168)
+- Split logs into multiple files  [\#142](https://github.com/czechboy0/Buildasaur/issues/142)
+- Password Storage [\#137](https://github.com/czechboy0/Buildasaur/issues/137)
+- Request/response caching [\#62](https://github.com/czechboy0/Buildasaur/issues/62)
+
+**Merged pull requests:**
+
+- BitBucket pagination [\#224](https://github.com/czechboy0/Buildasaur/pull/224) ([czechboy0](https://github.com/czechboy0))
+- BitBucket posting comments [\#223](https://github.com/czechboy0/Buildasaur/pull/223) ([czechboy0](https://github.com/czechboy0))
+- BitBucket refresh token flow [\#222](https://github.com/czechboy0/Buildasaur/pull/222) ([czechboy0](https://github.com/czechboy0))
+- Most BitBucket entities [\#221](https://github.com/czechboy0/Buildasaur/pull/221) ([czechboy0](https://github.com/czechboy0))
+- \[WIP\] BitBucket entities [\#218](https://github.com/czechboy0/Buildasaur/pull/218) ([czechboy0](https://github.com/czechboy0))
+- BitBucket authentication [\#216](https://github.com/czechboy0/Buildasaur/pull/216) ([czechboy0](https://github.com/czechboy0))
+- Authentication refactoring [\#215](https://github.com/czechboy0/Buildasaur/pull/215) ([czechboy0](https://github.com/czechboy0))
+- Adding Crashlytics [\#210](https://github.com/czechboy0/Buildasaur/pull/210) ([czechboy0](https://github.com/czechboy0))
+- Storing credentials in Keychain [\#209](https://github.com/czechboy0/Buildasaur/pull/209) ([czechboy0](https://github.com/czechboy0))
+- Just moving files around... [\#207](https://github.com/czechboy0/Buildasaur/pull/207) ([czechboy0](https://github.com/czechboy0))
+- Added Builda's beautiful face to the main window! [\#204](https://github.com/czechboy0/Buildasaur/pull/204) ([czechboy0](https://github.com/czechboy0))
+- GitHub response caching [\#203](https://github.com/czechboy0/Buildasaur/pull/203) ([czechboy0](https://github.com/czechboy0))
+- Cap log file size at 10MB [\#201](https://github.com/czechboy0/Buildasaur/pull/201) ([accatyyc](https://github.com/accatyyc))
+- RAC updated to 4.RC1 [\#200](https://github.com/czechboy0/Buildasaur/pull/200) ([czechboy0](https://github.com/czechboy0))
+
+## [v0.6.5](https://github.com/czechboy0/buildasaur/tree/v0.6.5) (2016-01-14)
+[Full Changelog](https://github.com/czechboy0/buildasaur/compare/v0.6.4...v0.6.5)
+
+**Merged pull requests:**
+
+- Xcode 7.3b1 API compatibility \(9\) [\#199](https://github.com/czechboy0/Buildasaur/pull/199) ([czechboy0](https://github.com/czechboy0))
+
 ## [v0.6.4](https://github.com/czechboy0/buildasaur/tree/v0.6.4) (2015-11-04)
 [Full Changelog](https://github.com/czechboy0/buildasaur/compare/v0.6.3...v0.6.4)
 

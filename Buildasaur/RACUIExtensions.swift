@@ -9,6 +9,7 @@
 import Foundation
 import Cocoa
 import ReactiveCocoa
+import Result
 
 //taken from https://github.com/ColinEberhardt/ReactiveTwitterSearch/blob/82ab9d2595b07cbefd4c917ae643b568dd858119/ReactiveTwitterSearch/Util/UIKitExtensions.swift
 
@@ -88,7 +89,7 @@ extension NSButton {
             let button = input as! NSButton
             return SignalProducer { sink, _ in
                 on.value = button.on
-                sendCompleted(sink)
+                sink.sendCompleted()
             }
         }
         

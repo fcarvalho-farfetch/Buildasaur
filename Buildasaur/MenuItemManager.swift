@@ -26,8 +26,7 @@ class MenuItemManager : NSObject, NSMenuDelegate {
         statusItem.highlightMode = true
         
         let menu = NSMenu()
-        menu.addItemWithTitle("Open Buildasaur", action: "showMainWindow", keyEquivalent: "")
-        menu.addItemWithTitle("Quit Buildasaur", action: "terminate:", keyEquivalent: "")
+        menu.addItemWithTitle("Open Buildasaur", action: #selector(AppDelegate.showMainWindow), keyEquivalent: "")
         menu.addItem(NSMenuItem.separatorItem())
         self.firstIndexLastSyncedMenuItem = menu.numberOfItems
         
@@ -48,7 +47,7 @@ class MenuItemManager : NSObject, NSMenuDelegate {
         //this many items need to be created or destroyed
         if diffItems > 0 {
             for _ in 0..<diffItems {
-                menu.addItemWithTitle("", action: "", keyEquivalent: "")
+                menu.addItemWithTitle("", action: Selector(""), keyEquivalent: "")
             }
         } else if diffItems < 0 {
             for _ in 0..<abs(diffItems) {
@@ -57,17 +56,14 @@ class MenuItemManager : NSObject, NSMenuDelegate {
         }
         
         //now we have the right number, update the data
-        let texts = syncers.map({ (syncer: HDGitHubXCBotSyncer) -> String in
+        let texts = syncers
+            .sort { $0.project.serviceRepoName() < $1.project.serviceRepoName() }
+            .map({ (syncer: StandardSyncer) -> String in
             
-            let statusEmoji: String
-            if syncer.active {
-                statusEmoji = "✔️"
-            } else {
-                statusEmoji = "✖️"
-            }
+            let state = SyncerStatePresenter.stringForState(syncer.state.value, active: syncer.active)
             
             let repo: String
-            if let repoName = syncer.project.githubRepoName() {
+            if let repoName = syncer.project.serviceRepoName() {
                 repo = repoName
             } else {
                 repo = "???"
@@ -77,10 +73,10 @@ class MenuItemManager : NSObject, NSMenuDelegate {
             if let lastSuccess = syncer.lastSuccessfulSyncFinishedDate where syncer.active {
                 time = "last synced \(lastSuccess.nicelyFormattedRelativeTimeToNow())"
             } else {
-                time = "is not active"
+                time = ""
             }
             
-            let report = "\(statusEmoji) \(repo) \(time)"
+            let report = "\(repo) \(state) \(time)"
             return report
         })
         

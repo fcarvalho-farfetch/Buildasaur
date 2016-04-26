@@ -11,6 +11,7 @@ import BuildaKit
 import BuildaUtils
 import XcodeServerSDK
 import ReactiveCocoa
+import Result
 
 protocol EmptyBuildTemplateViewControllerDelegate: class {
     func didSelectBuildTemplate(buildTemplate: BuildTemplate)
@@ -88,7 +89,7 @@ class EmptyBuildTemplateViewController: EditableViewController {
                 let index = sself.existingBuildTemplatesPopup.indexOfSelectedItem
                 sself.selectItemAtIndex(index)
             }
-            sendCompleted(sink)
+            sink.sendCompleted()
         }
         let action = Action { (_: AnyObject?) in handler }
         self.existingBuildTemplatesPopup.rac_command = toRACCommand(action)

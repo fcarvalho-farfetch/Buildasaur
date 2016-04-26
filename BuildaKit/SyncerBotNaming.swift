@@ -24,11 +24,11 @@ class BotNaming {
     }
 
     class func nameForBotWithBranch(branch: Branch, repoName: String) -> String {
-        return "\(self.prefixForBuildaBotInRepoWithName(repoName, branch: branch)) Debug \(self.suffixForBuildaBot())"
+        return "\(self.prefixForBuildaBotInRepoWithName(repoName, branch: branch)) " + scheme + " \(self.suffixForBuildaBot())"
     }
 
-    class func nameForBotWithPR(pr: PullRequest, repoName: String) -> String {
-        return "\(self.prefixForBuildaBotInRepoWithName(repoName, pr: pr)) Debug PR #\(pr.number) \(self.suffixForBuildaBot())"
+    class func nameForBotWithPR(pr: PullRequest, scheme: String, repoName: String) -> String {
+        return "\(self.prefixForBuildaBotInRepoWithName(repoName, pr: pr)) " + scheme + " PR #\(pr.number) \(self.suffixForBuildaBot())"
     }
 
     class func prefixForBuildaBotInRepoWithName(repoName: String) -> String {

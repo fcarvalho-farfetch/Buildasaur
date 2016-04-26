@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import BuildaGitServer
 import BuildaUtils
 import XcodeServerSDK
 import ReactiveCocoa
@@ -20,7 +19,7 @@ public enum SyncerEventType {
     case DidStop
     
     case DidStartSyncing
-    case DidFinishSyncing
+    case DidFinishSyncing(ErrorType?)
     
     case DidEncounterError(ErrorType)
 }
@@ -54,7 +53,7 @@ class Trampoline: NSObject {
                 self.state.value = .DidStartSyncing
             } else if oldValue && !self.isSyncing {
                 self.lastSyncFinishedDate = NSDate()
-                self.state.value = .DidFinishSyncing
+                self.state.value = .DidFinishSyncing(self.lastSyncError)
             }
         }
     }
@@ -62,7 +61,7 @@ class Trampoline: NSObject {
     public var active: Bool {
         didSet {
             if active && !oldValue {
-                let s = Selector("jump")
+                let s = #selector(Trampoline.jump)
                 let timer = NSTimer(timeInterval: self.syncInterval, target: self.trampoline, selector: s, userInfo: nil, repeats: true)
                 self.timer = timer
                 NSRunLoop.mainRunLoop().addTimer(timer, forMode: kCFRunLoopCommonModes as String)
@@ -142,6 +141,10 @@ class Trampoline: NSObject {
     
     func notifyErrorString(errorString: String, context: String?) {
         self.notifyError(Error.withInfo(errorString), context: context)
+    }
+    
+    func notifyError(error: ErrorType?, context: String?) {
+        self.notifyError(error as? NSError, context: context)
     }
     
     func notifyError(error: NSError?, context: String?) {

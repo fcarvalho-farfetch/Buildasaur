@@ -9,14 +9,43 @@
 import Foundation
 import BuildaKit
 import ReactiveCocoa
+import Result
+
+struct SyncerStatePresenter {
+    
+    static func stringForState(state: SyncerEventType, active: Bool) -> String {
+        
+        guard active else {
+            return "🚧 stopped"
+        }
+        
+        let errorGen = { () -> String in
+            "❗ error!"
+        }
+        
+        switch state {
+        case .DidStartSyncing:
+            return "🔄 syncing..."
+        case .DidFinishSyncing(let error):
+            if error != nil {
+                return errorGen()
+            }
+        case .DidEncounterError(_):
+            return errorGen()
+        default: break
+        }
+        return "✅ idle..."
+    }
+}
 
 struct SyncerViewModel {
     
-    let syncer: HDGitHubXCBotSyncer
+    let syncer: StandardSyncer
     
     let status: SignalProducer<String, NoError>
     let host: SignalProducer<String, NoError>
     let projectName: SignalProducer<String, NoError>
+    let initialProjectName: String
     let buildTemplateName: SignalProducer<String, NoError>
     let editButtonTitle: SignalProducer<String, NoError>
     let editButtonEnabled: SignalProducer<Bool, NoError>
@@ -25,19 +54,23 @@ struct SyncerViewModel {
     typealias PresentEditViewControllerType = (ConfigTriplet) -> ()
     let presentEditViewController: PresentEditViewControllerType
     
-    init(syncer: HDGitHubXCBotSyncer, presentEditViewController: PresentEditViewControllerType) {
+    init(syncer: StandardSyncer, presentEditViewController: PresentEditViewControllerType) {
         self.syncer = syncer
         self.presentEditViewController = presentEditViewController
         
         let active = syncer.activeSignalProducer.producer
+        let state = syncer.state.producer
         
-        self.status = active.map { SyncerViewModel.stringForState($0) }
+        self.status = combineLatest(state, active)
+            .map { SyncerStatePresenter.stringForState($0.0, active: $0.1) }
         
         self.host = SignalProducer(value: syncer.xcodeServer)
             .map { $0.config.host ?? "[No Xcode Server]" }
         
         self.projectName = SignalProducer(value: syncer.project)
             .map { $0.workspaceMetadata?.projectName ?? "[No Project]" }
+        //pull initial project name for sorting
+        self.initialProjectName = syncer.project.workspaceMetadata?.projectName ?? ""
         
         self.buildTemplateName = SignalProducer(value: syncer.buildTemplate.name)
         self.editButtonTitle = SignalProducer(value: "View")
@@ -66,13 +99,6 @@ struct SyncerViewModel {
         self.syncer.active = !self.syncer.active
     }
     
-    private static func stringForState(active: Bool) -> String {
-        if active {
-            return "✔️ syncing..."
-        } else {
-            return "✖️ stopped."
-        }
-    }
     
 }
 

@@ -11,12 +11,15 @@ import Cocoa
 /*
 Please report any crashes on GitHub, I may optionally ask you to email them to me. Thanks!
 You can find them at ~/Library/Logs/DiagnosticReports/Buildasaur-*
-Also, you can find the log at ~/Library/Application Support/Buildasaur/Builda.log
+Also, you can find the logs at ~/Library/Application Support/Buildasaur/Logs
 */
 
 import BuildaUtils
 import XcodeServerSDK
 import BuildaKit
+import Fabric
+import Crashlytics
+import Sparkle
 
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
@@ -24,12 +27,14 @@ class AppDelegate: NSObject, NSApplicationDelegate {
     var syncerManager: SyncerManager!
     
     let menuItemManager = MenuItemManager()
+    let serviceAuthenticator = ServiceAuthenticator()
 
     var storyboardLoader: StoryboardLoader!
     
     var dashboardViewController: DashboardViewController?
     var dashboardWindow: NSWindow?
     var windows: Set<NSWindow> = []
+    var updater: SUUpdater?
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         
@@ -47,6 +52,8 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         //        defs.setBool(true, forKey: "NSConstraintBasedLayoutVisualizeMutuallyExclusiveConstraints")
         //        defs.synchronize()
         
+        self.setupSparkle()
+        self.setupURLCallback()
         self.setupPersistence()
         
         self.storyboardLoader = StoryboardLoader(storyboard: NSStoryboard.mainStoryboard)
@@ -61,6 +68,13 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         self.dashboardWindow = self.windowForPresentableViewControllerWithIdentifier("dashboard")!.0
     }
     
+    func setupSparkle() {
+        #if RELEASE
+            self.updater = SUUpdater.sharedUpdater()
+            self.updater!.delegate = self
+        #endif
+    }
+    
     func migratePersistence(persistence: Persistence) {
         
         let fileManager = NSFileManager.defaultManager()
@@ -68,19 +82,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let migrator = CompositeMigrator(persistence: persistence)
         if migrator.isMigrationRequired() {
             
-            Log.info("Migration required, launching migrator")
+            print("Migration required, launching migrator")
 
             do {
                 try migrator.attemptMigration()
             } catch {
-                Log.error("Migration failed with error \(error), wiping folder...")
+                print("Migration failed with error \(error), wiping folder...")
                 
                 //wipe the persistence. start over if we failed to migrate
                 _ = try? fileManager.removeItemAtURL(persistence.readingFolder)
             }
-            Log.info("Migration finished")
+            print("Migration finished")
         } else {
-            Log.verbose("No migration necessary, skipping...")
+            print("No migration necessary, skipping...")
         }
     }
     
@@ -88,18 +102,33 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         let persistence = PersistenceFactory.createStandardPersistence()
         
-        //setup logging
-        Logging.setup(persistence, alsoIntoFile: true)
-        
         //migration
         self.migratePersistence(persistence)
+        
+        //setup logging
+        Logging.setup(persistence, alsoIntoFile: true)
         
         //create storage manager
         let storageManager = StorageManager(persistence: persistence)
         let factory = SyncerFactory()
+        factory.syncerLifetimeChangeObserver = storageManager
         let loginItem = LoginItem()
         let syncerManager = SyncerManager(storageManager: storageManager, factory: factory, loginItem: loginItem)
         self.syncerManager = syncerManager
+        
+        if let crashlyticsOptOut = storageManager.config.value["crash_reporting_opt_out"] as? Bool where crashlyticsOptOut {
+            Log.info("User opted out of crash reporting")
+        } else {
+            #if DEBUG
+                Log.info("Not starting Crashlytics in debug mode.")
+            #else
+                Log.info("Will send crashlogs to Crashlytics. To opt out add `\"crash_reporting_opt_out\" = true` to ~/Library/Application Support/Buildasaur/Config.json")
+                NSUserDefaults.standardUserDefaults().registerDefaults([
+                    "NSApplicationCrashOnExceptions": true
+                    ])
+                Fabric.with([Crashlytics.self])
+            #endif
+        }
     }
 
     func createInitialViewController() -> DashboardViewController {
@@ -107,7 +136,17 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         let dashboard: DashboardViewController = self.storyboardLoader
             .presentableViewControllerWithStoryboardIdentifier("dashboardViewController", uniqueIdentifier: "dashboard", delegate: self)
         dashboard.syncerManager = self.syncerManager
+        dashboard.serviceAuthenticator = self.serviceAuthenticator
         return dashboard
+    }
+    
+    func handleUrl(url: NSURL) {
+        
+        print("Handling incoming url")
+        
+        if url.host == "oauth-callback" {
+            self.serviceAuthenticator.handleUrl(url)
+        }
     }
     
     func applicationShouldHandleReopen(sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
@@ -150,9 +189,38 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         
         NSApp.activateIgnoringOtherApps(true)
         
-        //first window. i wish there was a nicer way (please some tell me there is)
+        //first window. i wish there was a nicer way (please someone tell me there is)
         if NSApp.windows.count < 3 {
             self.dashboardWindow?.makeKeyAndOrderFront(self)
+        }
+    }
+    
+    //Sparkle magic
+    func checkForUpdates(sender: AnyObject!) {
+        self.updater?.checkForUpdates(sender)
+    }
+}
+
+extension AppDelegate: SUUpdaterDelegate {
+    
+    func updater(updater: SUUpdater!, willInstallUpdate item: SUAppcastItem!) {
+        self.syncerManager.heartbeatManager?.willInstallSparkleUpdate()
+    }
+}
+
+extension AppDelegate {
+    
+    func setupURLCallback() {
+        
+        // listen to scheme url
+        NSAppleEventManager.sharedAppleEventManager().setEventHandler(self, andSelector:#selector(AppDelegate.handleGetURLEvent(_:withReplyEvent:)), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
+    }
+    
+    func handleGetURLEvent(event: NSAppleEventDescriptor!, withReplyEvent: NSAppleEventDescriptor!) {
+        if let urlString = event.paramDescriptorForKeyword(AEKeyword(keyDirectObject))?.stringValue, url = NSURL(string: urlString) {
+            
+            //handle url
+            self.handleUrl(url)
         }
     }
 }

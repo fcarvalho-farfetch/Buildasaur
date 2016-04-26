@@ -110,8 +110,7 @@
       buildConfiguration = "Testing"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES"
-      codeCoverageEnabled = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -130,16 +129,6 @@
                BlueprintIdentifier = "3A81BB1E1B5A77E9004732CD"
                BuildableName = "BuildaKitTests.xctest"
                BlueprintName = "BuildaKitTests"
-               ReferencedContainer = "container:Buildasaur.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3A7F0CBB1BC14E640079A511"
-               BuildableName = "BuildasaurUITests.xctest"
-               BlueprintName = "BuildasaurUITests"
                ReferencedContainer = "container:Buildasaur.xcodeproj">
             </BuildableReference>
          </TestableReference>

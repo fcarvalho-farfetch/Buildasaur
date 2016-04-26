@@ -1,19 +1,33 @@
-platform :osx, '10.10'
+
+plugin 'cocoapods-keys', {
+  :keys => [
+    "GitHubAPIClientId",
+    "GitHubAPIClientSecret",
+    "BitBucketAPIClientId",
+    "BitBucketAPIClientSecret"
+]}
+
+source 'https://github.com/CocoaPods/Specs.git'
+source 'https://github.com/czechboy0/Podspecs.git'
+
+project 'Buildasaur', 'Testing' => :debug
+
+platform :osx, '10.11'
 use_frameworks!
 inhibit_all_warnings!
 
 def pods_for_errbody
-    pod 'BuildaUtils', '~> 0.2.2'
+    pod 'BuildaUtils', '~> 0.2.7'
 end
 
 def rac
-    pod 'ReactiveCocoa', '~> 4.0.4-alpha-1'
+    pod 'ReactiveCocoa', '~> 4.0.1'
 end
 
 def also_xcode_pods
     pods_for_errbody
-    pod 'XcodeServerSDK', '~> 0.5.1'
-    pod 'ekgclient', '~> 0.3.0'
+    pod 'XcodeServerSDK', '~> 0.5.7'
+    pod 'ekgclient', '~> 0.3.2'
 end
 
 def buildasaur_app_pods
@@ -21,14 +35,19 @@ def buildasaur_app_pods
     rac
     pod 'Ji', '~> 1.2.0'
     pod 'CryptoSwift'
+    pod 'Sparkle'
+    pod 'KeychainAccess'
 end
 
 def test_pods
-    pod 'Nimble', '~> 3.0.0'
+    pod 'Nimble', :git => "https://github.com/Quick/Nimble.git", :commit => "1730543fcd8b7d7258a3270bb6d3118921d46f9d"
+    pod 'DVR', '~> 0.2.1-snap1'
 end
 
 target 'Buildasaur' do
     buildasaur_app_pods
+    pod 'Crashlytics'
+    pod 'OAuthSwift'
 end
 
 target 'BuildaKit' do
@@ -36,19 +55,24 @@ target 'BuildaKit' do
 end
 
 target 'BuildaKitTests' do
-    also_xcode_pods
+    buildasaur_app_pods
     test_pods
 end
 
 target 'BuildaGitServer' do
     pods_for_errbody
+    rac
 end
 
 target 'BuildaGitServerTests' do
     pods_for_errbody
+    rac
+    test_pods
 end
 
 target 'BuildaHeartbeatKit' do
     also_xcode_pods
 end
+
+
 

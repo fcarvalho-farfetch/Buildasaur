@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 import XcodeServerSDK
 import BuildaHeartbeatKit
 import BuildaUtils
@@ -21,16 +22,16 @@ public class SyncerManager {
     public let factory: SyncerFactoryType
     public let loginItem: LoginItem
     
-    public let syncersProducer: SignalProducer<[HDGitHubXCBotSyncer], NoError>
+    public let syncersProducer: SignalProducer<[StandardSyncer], NoError>
     public let projectsProducer: SignalProducer<[Project], NoError>
     public let serversProducer: SignalProducer<[XcodeServer], NoError>
     
     public let buildTemplatesProducer: SignalProducer<[BuildTemplate], NoError>
     public let triggerProducer: SignalProducer<[Trigger], NoError>
     
-    public var syncers: [HDGitHubXCBotSyncer]
+    public var syncers: [StandardSyncer]
     private var configTriplets: SignalProducer<[ConfigTriplet], NoError>
-    private var heartbeatManager: HeartbeatManager!
+    public var heartbeatManager: HeartbeatManager?
 
     public init(storageManager: StorageManager, factory: SyncerFactoryType, loginItem: LoginItem) {
         
@@ -66,8 +67,8 @@ public class SyncerManager {
         } else {
             Log.info("Will send anonymous heartbeat. To opt out add `\"heartbeat_opt_out\" = true` to ~/Library/Application Support/Buildasaur/Config.json")
             self.heartbeatManager = HeartbeatManager(server: "https://builda-ekg.herokuapp.com")
-            self.heartbeatManager.delegate = self
-            self.heartbeatManager.start()
+            self.heartbeatManager!.delegate = self
+            self.heartbeatManager!.start()
         }
     }
     
@@ -90,9 +91,9 @@ public class SyncerManager {
         }
     }
     
-    public func syncerWithRef(ref: RefType) -> SignalProducer<HDGitHubXCBotSyncer?, NoError> {
+    public func syncerWithRef(ref: RefType) -> SignalProducer<StandardSyncer?, NoError> {
         
-        return self.syncersProducer.map { allSyncers -> HDGitHubXCBotSyncer? in
+        return self.syncersProducer.map { allSyncers -> StandardSyncer? in
             return allSyncers.filter { $0.config.value.id == ref }.first
         }
     }
@@ -111,7 +112,13 @@ public class SyncerManager {
 }
 
 extension SyncerManager: HeartbeatManagerDelegate {
-    public func numberOfRunningSyncers() -> Int {
-        return self.syncers.filter { $0.active }.count
+    
+    public func typesOfRunningSyncers() -> [String : Int] {
+        return self.syncers.filter { $0.active }.reduce([:]) { (all, syncer) -> [String: Int] in
+            var stats = all
+            let syncerType = syncer._project.workspaceMetadata!.service.rawValue
+            stats[syncerType] = (stats[syncerType] ?? 0) + 1
+            return stats
+        }
     }
 }

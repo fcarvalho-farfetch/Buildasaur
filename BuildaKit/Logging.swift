@@ -13,7 +13,9 @@ public class Logging {
     
     public class func setup(persistence: Persistence, alsoIntoFile: Bool) {
         
-        let path = persistence.fileURLWithName("Builda.log", intention: .Writing, isDirectory: false)
+        let path = persistence
+            .fileURLWithName("Logs", intention: .Writing, isDirectory: true)
+            .URLByAppendingPathComponent("Builda.log", isDirectory: false)
         
         var loggers = [Logger]()
         
@@ -21,7 +23,8 @@ public class Logging {
         loggers.append(consoleLogger)
         
         if alsoIntoFile {
-            let fileLogger = FileLogger(filePath: path)
+            let fileLogger = FileLogger(fileURL: path)
+            fileLogger.fileSizeCap = 1024 * 1024 * 10 // 10MB
             loggers.append(fileLogger)
         }
         

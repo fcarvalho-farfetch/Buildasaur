@@ -11,6 +11,7 @@ import XcodeServerSDK
 import BuildaUtils
 import BuildaKit
 import ReactiveCocoa
+import Result
 
 protocol TriggerViewControllerDelegate: class {
     func triggerViewControllerDidCancelEditingTrigger(trigger: TriggerConfig)
@@ -159,7 +160,7 @@ class TriggerViewController: NSViewController {
                 let all = sself.kinds.value
                 sself.selectedKind.value = all[index]
             }
-            sendCompleted(sink)
+            sink.sendCompleted()
         }
         let action = Action { (_: AnyObject?) in handler }
         self.kindPopup.rac_command = toRACCommand(action)
@@ -185,7 +186,7 @@ class TriggerViewController: NSViewController {
                 let all = sself.phases.value
                 sself.selectedPhase.value = all[index]
             }
-            sendCompleted(sink)
+            sink.sendCompleted()
         }
         let action = Action { (_: AnyObject?) in handler }
         self.phasePopup.rac_command = toRACCommand(action)
@@ -365,13 +366,13 @@ extension TriggerViewController: NSTextFieldDelegate {
         let result: Bool
         switch commandSelector {
             
-        case Selector("insertNewline:"):
+        case #selector(insertNewline(_:)):
             // new line action:
             // always insert a line-break character and don’t cause the receiver to end editing
             textView.insertNewlineIgnoringFieldEditor(self)
             result = true
             
-        case Selector("insertTab:"):
+        case #selector(insertTab(_:)):
             // tab action:
             // always insert a tab character and don’t cause the receiver to end editing
             textView.insertTabIgnoringFieldEditor(self)

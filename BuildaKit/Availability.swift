@@ -8,6 +8,7 @@
 
 import Foundation
 import ReactiveCocoa
+import Result
 import BuildaUtils
 import XcodeServerSDK
 
@@ -20,16 +21,16 @@ public class AvailabilityChecker {
             return SignalProducer {
                 sink, _ in
                 
-                sendNext(sink, .Checking)
+                sink.sendNext(.Checking)
                 
                 NetworkUtils.checkAvailabilityOfXcodeServerWithCurrentSettings(input, completion: { (success, error) -> () in
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                         if success {
-                            sendNext(sink, .Succeeded)
+                            sink.sendNext(.Succeeded)
                         } else {
-                            sendNext(sink, .Failed(error))
+                            sink.sendNext(.Failed(error))
                         }
-                        sendCompleted(sink)
+                        sink.sendCompleted()
                     })
                 })
             }
@@ -42,26 +43,26 @@ public class AvailabilityChecker {
             
             return SignalProducer { sink, _ in
                 
-                sendNext(sink, .Checking)
+                sink.sendNext(.Checking)
                 
                 var project: Project!
                 do {
                     project = try Project(config: input)
                 } catch {
-                    sendNext(sink, .Failed(error))
+                    sink.sendNext(.Failed(error))
                     return
                 }
                 
-                NetworkUtils.checkAvailabilityOfGitHubWithCurrentSettingsOfProject(project, completion: { (success, error) -> () in
+                NetworkUtils.checkAvailabilityOfServiceWithProject(project, completion: { (success, error) -> () in
                     
                     NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
                         
                         if success {
-                            sendNext(sink, .Succeeded)
+                            sink.sendNext(.Succeeded)
                         } else {
-                            sendNext(sink, .Failed(error))
+                            sink.sendNext(.Failed(error))
                         }
-                        sendCompleted(sink)
+                        sink.sendCompleted()
                     })
                 })
             }

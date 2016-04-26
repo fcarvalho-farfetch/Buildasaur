@@ -12,6 +12,7 @@ import BuildaUtils
 import XcodeServerSDK
 import BuildaKit
 import ReactiveCocoa
+import Result
 
 protocol SyncerViewControllerDelegate: class {
     
@@ -30,12 +31,13 @@ class SyncerViewController: ConfigEditViewController {
     
     weak var delegate: SyncerViewControllerDelegate?
     
-    private let syncer = MutableProperty<HDGitHubXCBotSyncer?>(nil)
+    private let syncer = MutableProperty<StandardSyncer?>(nil)
     
     @IBOutlet weak var editButton: NSButton!
     @IBOutlet weak var statusTextField: NSTextField!
     @IBOutlet weak var startStopButton: NSButton!
     @IBOutlet weak var statusActivityIndicator: NSProgressIndicator!
+    @IBOutlet weak var stateLabel: NSTextField!
 
     @IBOutlet weak var xcodeServerNameLabel: NSTextField!
     @IBOutlet weak var projectNameLabel: NSTextField!
@@ -71,11 +73,18 @@ class SyncerViewController: ConfigEditViewController {
 
         self.editing <~ isSyncing.map { !$0 }
         
-        //when a new syncer comes in, rebind the isSyncing property
+        //when a new syncer comes in, rebind appropriate properties
         self.syncer.producer.startWithNext { [weak self] in
             guard let sself = self else { return }
             if let syncer = $0 {
                 sself.isSyncing <~ syncer.activeSignalProducer
+                
+                let stateString = combineLatest(
+                    syncer.state.producer,
+                    syncer.activeSignalProducer.producer
+                    ).map { SyncerStatePresenter.stringForState($0.0, active: $0.1) }
+                sself.stateLabel.rac_stringValue <~ stateString
+
             } else {
                 sself.isSyncing <~ ConstantProperty(false)
             }
@@ -182,7 +191,7 @@ class SyncerViewController: ConfigEditViewController {
                     sself.syncInterval.value = value
                 }
             }
-            sendCompleted(sink)
+            sink.sendCompleted()
         }
         let action = Action { (_: AnyObject?) in handler }
         self.syncIntervalStepper.rac_command = toRACCommand(action)
@@ -304,7 +313,7 @@ extension SyncerViewController {
         
         let producer = self.syncer
             .producer
-            .map { (maybeSyncer: HDGitHubXCBotSyncer?) -> SignalProducer<String, NoError> in
+            .map { (maybeSyncer: StandardSyncer?) -> SignalProducer<String, NoError> in
                 guard let syncer = maybeSyncer else { return SignalProducer(value: "") }
                 
                 return syncer.state.producer.map {
@@ -363,7 +372,7 @@ extension SyncerViewController {
             "Syncer is Idle... Waiting for the next sync...",
         ]
         
-        if let ourSyncer = syncer as? HDGitHubXCBotSyncer {
+        if let ourSyncer = syncer as? StandardSyncer {
             
             //error?
             if let error = ourSyncer.lastSyncError {
