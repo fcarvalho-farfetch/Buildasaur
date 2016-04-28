@@ -10,7 +10,7 @@ plugin 'cocoapods-keys', {
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/czechboy0/Podspecs.git'
 
-project 'Buildasaur', 'Testing' => :debug
+xcodeproj 'Buildasaur', 'Testing' => :debug
 
 platform :osx, '10.11'
 use_frameworks!
